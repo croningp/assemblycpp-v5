@@ -61,9 +61,8 @@ void printOriginalGraph(ofstream &ofs)
     ofs << "\"Vertices\": [";
     for (size_t i = 0; i < originalMolecule.mg.size(); i++)
     {
-        ofs << i;
-        if (i < originalMolecule.mg.size() - 1)
-            ofs << ',';
+            ofs << i;
+            if (i < originalMolecule.mg.size() - 1) ofs << ',';
     }
     ofs << "],\n";
     ofs << "\"Edges\": ";
@@ -73,36 +72,36 @@ void printOriginalGraph(ofstream &ofs)
     for (size_t i = 0; i < originalMolecule.mg.size(); i++)
     {
         ofs << "\"" << originalMolecule.mg[i].type << "\"";
-        if (i < originalMolecule.mg.size() - 1)
-            ofs << ',';
+        if (i < originalMolecule.mg.size() - 1) ofs << ',';
     }
     ofs << "],\n";
     ofs << "\"EdgeColours\": [";
     for (size_t i = 0; i < originalEdgeList.size(); i++)
     {
-        switch (originalMolecule.btypeS(originalEdgeList[i].a, originalEdgeList[i].c))
+        int x = originalMolecule.btypeS(originalEdgeList[i].a, originalEdgeList[i].c);
+        if (x < 4)
         {
-        case 1:
-            ofs << "\"single\"";
-            break;
-        case 2:
-            ofs << "\"double\"";
-            break;
-        case 3:
-            ofs << "\"triple\"";
-            break;
-        case 4:
-            ofs << "quadruple";
-            break;
-        case 5:
-            ofs << "quintuple";
-            break;
-        case 0:
-            ofs << "error";
-            break;
+            switch (x)
+            {
+                case 1: ofs << "\"single\"";
+                    break;
+                case 2: ofs << "\"double\"";
+                    break;
+                case 3: ofs << "\"triple\"";
+                    break;
+                case 4: ofs << "\"quadruple\"";
+                    break;
+                case 5: ofs << "\"quintuple\"";
+                    break;
+                case 0: ofs << "error";
+                    break;
+            }
         }
-        if (i < originalEdgeList.size() - 1)
-            ofs << ',';
+        else
+        {
+            ofs << "\"" + to_string(x) + "\"";
+        }
+        if (i < originalEdgeList.size() - 1) ofs << ',';
     }
     ofs << "]\n";
 }
@@ -156,29 +155,30 @@ void printRemnantGraph(standardBitset mask, ofstream &ofs)
     {
         if (dual[i])
         {
-            switch (targetMolecule.btypeS(univEdgeList[i].a, univEdgeList[i].c))
+            int x = targetMolecule.btypeS(univEdgeList[i].a, univEdgeList[i].c);
+            if (x < 4)
             {
-            case 1:
-                ofs << "\"single\"";
-                break;
-            case 2:
-                ofs << "\"double\"";
-                break;
-            case 3:
-                ofs << "\"triple\"";
-                break;
-            case 4:
-                ofs << "quadruple";
-                break;
-            case 5:
-                ofs << "quintuple";
-                break;
-            case 0:
-                ofs << "error";
-                break;
+                switch (x)
+                {
+                    case 1: ofs << "\"single\"";
+                        break;
+                    case 2: ofs << "\"double\"";
+                        break;
+                    case 3: ofs << "\"triple\"";
+                        break;
+                    case 4: ofs << "\"quadruple\"";
+                        break;
+                    case 5: ofs << "\"quintuple\"";
+                        break;
+                    case 0: ofs << "error";
+                        break;
+                }
             }
-            if (i != msb)
-                ofs << ',';
+            else
+            {
+                ofs << "\"" + to_string(x) + "\"";
+            }
+            if (i != msb) ofs << ',';
         }
     }
     ofs << "]\n";
