@@ -106,35 +106,6 @@ void assemblyCalculator(string &fileName)
     }
 }
 
-/**
- * @brief Memory usage tracker, works for linux only
- * 
- * @param outputFilename output filename
- */
-void maxMemoryUsage(const string& outputFilename) {
-    ifstream status_file("/proc/self/status");
-    string line, peakMemory;
-
-    while (getline(status_file, line))
-    {
-        if (line.rfind("VmPeak:", 0) == 0)
-        {
-            peakMemory = line;
-            break;
-        }
-    }
-
-    ofstream outFile(outputFilename);
-    if (outFile.is_open()) {
-        outFile << peakMemory << '\n';
-        outFile.close();
-    } 
-    else
-    {
-        cerr << "Error: could not open output file.\n";
-    }
-}
-
 int main(int argc, char** argv)
 {
     #ifdef _WIN32
@@ -153,9 +124,4 @@ int main(int argc, char** argv)
         else assemblyCalculator(s);
     }
     else cout << "no file selected\n";
-    
-    #ifdef _WIN32
-    #else
-        maxMemoryUsage("memUsage");
-    #endif
 }
